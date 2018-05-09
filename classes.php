@@ -1,95 +1,66 @@
 <?php
 
-class Car
-{
-    public $name;
-    public $fuelClass;
-    public $status;
-    public $currentPosition = array();
-    public $lastPosition = array();
+$servername = "localhost";
+$username = "villnoweric";
+$password = "";
+$DB = "glencoe";
 
-    public function __construct($name, $fuelClass)
-    {
-        $this->name = $name;
-        $this->fuelClass = $fuelClass;
-        $this->status = "Idle";
-    }
+// Create connection
+$conn = new mysqli($servername, $username, $password, $DB);
+
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+} 
+//echo "Connected successfully";
+
+function distance($lat1, $lon1, $lat2, $lon2) {
+
+  $theta = $lon1 - $lon2;
+  $dist = sin(deg2rad($lat1)) * sin(deg2rad($lat2)) +  cos(deg2rad($lat1)) * cos(deg2rad($lat2)) * cos(deg2rad($theta));
+  $dist = acos($dist);
+  $dist = rad2deg($dist);
+  $miles = $dist * 60 * 1.1515;
+  $unit = strtoupper($unit);
+
+  return $miles;
+}
+
+function getCar($driver){
+    global $conn;
+    $sql = "SELECT * FROM runs WHERE driver='$driver' AND status!='Finished' AND status!='DNF'";
+    $result = $conn->query($sql);
     
-    public function getName()
-    {
-        return $this->name;
-    }
-    
-    public function getFuelClass()
-    {
-        return $this->fuelClass;
-    }
-    
-    public function getCurrentPosition()
-    {
-        if($this->status=="Active"){
-            return "Lat: " . $this->currentPosition['lat'] . " Long: " . $this->currentPosition['long'];
+    if ($result->num_rows > 0) {
+        // output data of each row
+        while($row = $result->fetch_assoc()) {
+            $car = $row['vehicle'];
         }
     }
     
-    public function updatePosition($lat,$long)
-    {
-        $this->lastPosition = $this->currentPosition;
-        $this->currentPosition = array(
-            'lat'=>$lat,
-            'long'=>$long,
-            'time'=>time()
-            );
-    }
-    
+    return $car;
 }
 
-class Run
-{
-    public $car;
-    public $driver;
-    public $start;
-    public $status;
+
+function updatePosition($car, $lat, $long){
+    global $conn;
+    $sql = "SELECT * FROM vehicles WHERE name='$car'";
+    $result = $conn->query($sql);
     
-    public function __construct($car, $driver)
-    {
-        $this->car = $car;
-        $this->driver = $driver;
-        $this->start = time();
-        $this->status = "Pending";
-    }
-    
-    public function getCar()
-    {
-        return $this->car;
-    }
-    
-    public function getDurration()
-    {
-        if($this->status=='Ready'){
-            return "00:00:00";
-        }else{
-            $duration = time() - $this->start;
-            return $duration;
+    if ($result->num_rows > 0) {
+        // output data of each row
+        while($row = $result->fetch_assoc()) {
+            $tempLat = $row['currentLat'];
+            $tempLong = $row['currentLong'];
         }
     }
     
-    public function getStatus()
-    {
-        return $this->status;
-    }
+    $date = date('Y-m-d H:i:s');
     
-}
+    $sql2 = "UPDATE vehicles SET lastSeen='$date', lastLat='$tempLat', lastLong='$tempLong', currentLat='$lat', currentLong='$long' WHERE `name`='$car'";
 
-class Driver
-{
-    public $name;
-    public $deviceID;
-    public $status;
-    
-    public function __construct($name, $deviceID)
-    {
-        $this->name = $name;
-        $this->deviceID = $deviceID;
+    if ($conn->query($sql2) === TRUE) {
+    } else {
+        echo "Error updating record: " . $conn->error;
     }
+    
 }

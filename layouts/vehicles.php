@@ -3,14 +3,25 @@
 echo "<div class='container-fluid'>";
 echo "<h2>Vehicles</h2>";
 echo "<table class='table table-bordered'>";
-echo "<thead><tr><th>Name</th><th>Position</th><th>Fuel Class</th><th>Status</th><th></th></tr></thead>";
+echo "<thead><tr><th>Color</th><th>Name</th><th>Position</th><th>Fuel Class</th><th>Status</th><th></th></tr></thead>";
 
-foreach ($cars as $key => $car){
-    echo "<tr><td>" . $car->getName() . "</td><td>" . $car->getCurrentPosition() .  "</td><td>" . $car->getFuelClass() . "</td><td>" . $car->status . "</td><td><a class='btn btn-danger' href='action.php?delete=" . $key . "'>Delete</a></td></tr>";
+$sql = "SELECT * FROM vehicles";
+$result = $conn->query($sql);
+
+if ($result->num_rows > 0) {
+    // output data of each row
+    while($row = $result->fetch_assoc()) {
+        echo "<tr><td bgcolor='" . $row['color'] . "'></td><td>" . $row['name'] . "</td><td>" . $row['currentLat'] . ", " . $row['currentLong'] .  "</td><td>" . $row['fuelType'] . "</td><td>" . $row['status'] . "</td><td><a class='btn btn-danger' href='action.php?delete=" . $row['ID'] . "'>Delete</a></td></tr>";
+    }
+} else {
+    echo "<tr><td colspan='6'>No Vehicles</td></tr>";
 }
 
 echo "<form class='form-inline' action='action.php' method='post'>";
 echo "<tr>
+    <td>
+        <input class='form-control' name='color' type='text'>
+    </td>
     <td>
         <input class='form-control' name='name' type='text'>
     </td>

@@ -2,18 +2,20 @@
 
 require('../classes.php');
 
-$cars = unserialize(file_get_contents('../data/cars'));
-$runs = unserialize(file_get_contents('../data/runs'));
-$drivers = unserialize(file_get_contents('../data/drivers'));
-
-if(isset($_GET['method'])){
+if(isset($_POST['driver'])){
     
     $array = array("status"=>"Idle");
     
-    foreach($runs as $key=>$run){
-        if($run->driver == $_GET['driver']){
+    $name = $_POST['driver'];
+    
+    $sql = "SELECT * FROM runs WHERE driver='$name' AND status='Pending'";
+    $result = $conn->query($sql);
+    
+    if ($result->num_rows > 0) {
+        // output data of each row
+        while($row = $result->fetch_assoc()) {
             $array['status'] = "Pending";
-            $array['vehicle'] = $run->car;
+            $array['vehicle'] = $row['vehicle'];
         }
     }
     

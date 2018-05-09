@@ -2,10 +2,6 @@
 
 require('classes.php');
 
-$cars = unserialize(file_get_contents('data/cars'));
-$runs = unserialize(file_get_contents('data/runs'));
-$drivers = unserialize(file_get_contents('data/drivers'));
-
 include('layouts/header.php');
 
 echo "<div class='row'><div class='col-md-6'>";

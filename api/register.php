@@ -2,24 +2,21 @@
 
 require('../classes.php');
 
-$cars = unserialize(file_get_contents('../data/cars'));
-$runs = unserialize(file_get_contents('../data/runs'));
-$drivers = unserialize(file_get_contents('../data/drivers'));
-
-if(isset($_POST['method'])){
+if(isset($_POST['name'])){
     
-    array_push($drivers, new Driver($_POST['name'], $_POST['deviceID']));
+    $name = $_POST['name'];
     
-    $array = array("returned_username"=>"-",
-    "returned_password"=>"-",
-    "message"=>"succsess",
-    "response_code"=>"1");
+    $sql = "INSERT INTO drivers (name, status) VALUES ('$name','Idle')";
+    
+    if ($conn->query($sql) === TRUE) {
+    } else {
+        echo "Error: " . $sql . "<br>" . $conn->error;
+    }
+    
+    
+    $array = array("response"=>"1");
     
     header('Content-type: application/json');
     echo json_encode($array);
     
 }
-
-file_put_contents('../data/cars', serialize($cars));
-file_put_contents('../data/runs', serialize($runs));
-file_put_contents('../data/drivers', serialize($drivers));

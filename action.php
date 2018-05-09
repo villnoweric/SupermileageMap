@@ -2,32 +2,73 @@
 
 require('classes.php');
 
-$cars = unserialize(file_get_contents('data/cars'));
-$runs = unserialize(file_get_contents('data/runs'));
-$drivers = unserialize(file_get_contents('data/drivers'));
-
 if(isset($_POST['name'])){
     
-    array_push($cars, new Car($_POST['name'], $_POST['fuelClass']));
+    //NEW VEHICLE
+    $name = $_POST['name'];
+    $fuelClass = $_POST['fuelClass'];
+    $color = $_POST['color'];
+    
+    $sql = "INSERT INTO vehicles (name, fuelType, color, status) VALUES ('$name','$fuelClass','$color','Idle')";
+    
+    if ($conn->query($sql) === TRUE) {
+    } else {
+        echo "Error: " . $sql . "<br>" . $conn->error;
+    }
     
 }
 
 if(isset($_POST['car'])){
     
-    array_push($runs, new Run($_POST['car'], $_POST['driver']));
+    $car = $_POST['car'];
+    $driver = $_POST['driver'];
+    
+    $sql = "INSERT INTO runs (vehicle, driver, status) VALUES ('$car','$driver','Pending')";
+    
+    if ($conn->query($sql) === TRUE) {
+    } else {
+        echo "Error: " . $sql . "<br>" . $conn->error;
+    }
     
 }
 
 if(isset($_GET['delete'])){
-    array_splice($cars, $_GET['delete'], 1);
+    
+    //DELETE VEHICLE
+    $delete = $_GET['delete'];
+    
+    $sql = "DELETE FROM vehicles WHERE ID='$delete'";
+
+    if ($conn->query($sql) === TRUE) {
+    } else {
+        echo "Error deleting record: " . $conn->error;
+    }
 }
 
 if(isset($_GET['deleterun'])){
-    array_splice($runs, $_GET['deleterun'], 1);
+    
+    $delete = $_GET['deleterun'];
+    
+    $sql = "DELETE FROM runs WHERE ID='$delete'";
+
+    if ($conn->query($sql) === TRUE) {
+    } else {
+        echo "Error deleting record: " . $conn->error;
+    }
+    
 }
 
-file_put_contents('data/cars', serialize($cars));
-file_put_contents('data/runs', serialize($runs));
-file_put_contents('data/drivers', serialize($drivers));
+if(isset($_GET['deletedriver'])){
+    
+    $delete = $_GET['deletedriver'];
+    
+    $sql = "DELETE FROM drivers WHERE ID='$delete'";
+
+    if ($conn->query($sql) === TRUE) {
+    } else {
+        echo "Error deleting record: " . $conn->error;
+    }
+    
+}
 
 header("Location: ./");
