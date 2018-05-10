@@ -6,11 +6,7 @@ include('layouts/header.php');
 
 echo "<div class='row'><div class='col-md-6'>";
 
-include('layouts/vehicles.php');
-
-include('layouts/drivers.php');
-
-include('layouts/runs.php');
+echo '<iframe src="./data.php" style="height: 96%; width: 100%;" frameborder="0"></iframe>';
 
 echo "</div><div class='col-md-6'>";
 

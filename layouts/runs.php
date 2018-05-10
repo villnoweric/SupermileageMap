@@ -11,7 +11,7 @@ $result = $conn->query($sql);
 if ($result->num_rows > 0) {
     // output data of each row
     while($row = $result->fetch_assoc()) {
-        echo "<tr><td>" . $row['vehicle'] . "</td><td>" . $row['driver'] . "</td><td>" . $row['avgSpeed'] . "</td><td>" . number_format($row['distance'],4) . "</td><td>" . gmdate("H:i:s", $row['count']) . "</td><td>" . $row['status'] . "</td><td><a class='btn btn-danger' href='action.php?deleterun=" . $row['ID'] . "'>Delete</a></td></tr>";
+        echo "<tr><td>" . $row['vehicle'] . "</td><td>" . $row['driver'] . "</td><td>" . number_format($row['avgSpeed'],2) . "</td><td>" . number_format($row['distance'],3) . "</td><td>" . gmdate("H:i:s", $row['count']) . "</td><td>" . $row['status'] . "</td><td><a class='btn btn-danger' href='action.php?deleterun=" . $row['ID'] . "'>Delete</a></td></tr>";
     }
 } else {
     echo "<tr><td colspan='7'>No Runs</td></tr>";

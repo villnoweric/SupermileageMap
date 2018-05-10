@@ -71,4 +71,4 @@ if(isset($_GET['deletedriver'])){
     
 }
 
-header("Location: ./");
+header("Location: ./data.php");
