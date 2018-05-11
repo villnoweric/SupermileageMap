@@ -41,9 +41,9 @@ function getCar($driver){
 }
 
 
-function updatePosition($car, $lat, $long){
+function updatePosition($vehicle, $lat, $long, $speed){
     global $conn;
-    $sql = "SELECT * FROM vehicles WHERE name='$car'";
+    $sql = "SELECT * FROM vehicles WHERE ID='$vehicle'";
     $result = $conn->query($sql);
     
     if ($result->num_rows > 0) {
@@ -56,11 +56,41 @@ function updatePosition($car, $lat, $long){
     
     $date = date('Y-m-d H:i:s');
     
-    $sql2 = "UPDATE vehicles SET lastSeen='$date', lastLat='$tempLat', lastLong='$tempLong', currentLat='$lat', currentLong='$long' WHERE `name`='$car'";
+    $sql2 = "UPDATE vehicles SET lastSeen='$date', lastLat='$tempLat', lastLong='$tempLong', currentLat='$lat', currentLong='$long', speed='$speed' WHERE `name`='$vehicle'";
 
     if ($conn->query($sql2) === TRUE) {
     } else {
         echo "Error updating record: " . $conn->error;
+    }
+    
+}
+
+class run{
+    
+    private $conn;
+    private $row;
+    public $vehicle;
+    public $driver;
+    
+    function __construct($ID){
+        global $conn;
+        $this->conn = $conn;
+        $sql = "SELECT * FROM runs WHERE ID='$ID'";
+        $result = $conn->query($sql);
+        if ($result->num_rows > 0) {
+            while($row = $result->fetch_assoc()) {
+                $this->vehicle = $row['vehicle'];
+                $this->driver = $row['driver'];
+            }
+        }
+    }
+    
+    public function getVehicle(){
+        return $this->vehicle;
+    }
+
+    public function getDriver(){
+        return $this->driver;
     }
     
 }

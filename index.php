@@ -4,14 +4,24 @@ require('classes.php');
 
 include('layouts/header.php');
 
-echo "<div class='row'><div class='col-md-6'>";
+include('layouts/nav.php');
 
-echo '<iframe src="./data.php" style="height: 96%; width: 100%;" frameborder="0"></iframe>';
+if($_GET['page']==""){
 
-echo "</div><div class='col-md-6'>";
+echo "<div style='float:left; width:50%;'>";
+
+echo '<iframe src="./data.php" style="height: Calc(100% - 51px); width: 100%;" frameborder="0"></iframe>';
+
+echo "</div><div style='float:right; width:50%;'>";
 
 include('layouts/map.php');
 
-echo "</div></div>";
+echo "</div>";
+
+}elseif($_GET['page']=="map"){
+    include('layouts/map.php');
+}elseif($_GET['page']=="data"){
+    echo '<iframe src="./data.php" style="height: Calc(100% - 51px); width: 100%;" frameborder="0"></iframe>';
+}
 
 include('layouts/footer.php');

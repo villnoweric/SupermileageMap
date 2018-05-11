@@ -5,7 +5,8 @@
   <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA1V1IXtf9k-gcheHfdkkPw3jnglMitPq8"></script>
 <style>
     #map {
-        height: 96%;
+        margin-top:0px;
+        height: Calc(100%);
       }
 </style>
 <div id="map">
@@ -44,8 +45,8 @@
   function initMap() {
     map = new google.maps.Map(document.getElementById('map'), {
       //center: {lat: 46.41611111, lng: -94.27500000},
-      center: {lat: 44.82900000, lng: -94.08820000},
-      zoom: 18.5, //15.5
+      center: {lat: 44.7690, lng: -94.1518},
+      zoom: 10, //15.5
       disableDefaultUI: true,
       //gestureHandling: 'none',
       mapTypeId: 'satellite'

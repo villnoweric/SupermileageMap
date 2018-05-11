@@ -1,1 +1,0 @@
-a:2:{i:0;O:3:"Car":5:{s:4:"name";s:11:"Purple Rain";s:9:"fuelClass";s:8:"Electric";s:6:"status";s:4:"Idle";s:15:"currentPosition";a:0:{}s:12:"lastPosition";a:0:{}}i:1;O:3:"Car":5:{s:4:"name";s:13:"Pink Cadillac";s:9:"fuelClass";s:4:"E-85";s:6:"status";s:4:"Idle";s:15:"currentPosition";a:0:{}s:12:"lastPosition";a:0:{}}}
